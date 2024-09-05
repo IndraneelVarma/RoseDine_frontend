@@ -1,40 +1,38 @@
-name: Build Android APK
+name: Android Build
 
 on:
-  # Trigger the workflow on push or pull request to the main branch
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      # Install Flutter
-      - name: Install Flutter
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.10.0'
+          channel: 'stable'
 
-      # Run flutter pub get to install dependencies
-      - name: Install dependencies
+      - name: Get dependencies
         run: flutter pub get
 
-      # Build APK (for Android)
       - name: Build APK
-        run: flutter build apk --no-shrink
+        run: flutter build apk --release
 
-      # Upload the APK as an artifact
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: flutter-apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
