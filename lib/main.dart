@@ -1,6 +1,7 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rosedine/auth.dart';
@@ -9,17 +10,21 @@ import 'onboarding_screen.dart';
 
 final container = ProviderContainer();
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Always load .env file from assets, even for mobile platforms
+  await dotenv.load(fileName: "assets/.env");
+
   if (!kIsWeb) {
     print('Requesting SCHEDULE_EXACT_ALARM permission...');
     await Permission.scheduleExactAlarm.request();
     print('Initializing AndroidAlarmManager...');
     await AndroidAlarmManager.initialize();
   }
+
   runApp(UncontrolledProviderScope(container: container, child: MyApp()));
 }
-
 
 class MyApp extends ConsumerWidget {
   @override
@@ -56,4 +61,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
