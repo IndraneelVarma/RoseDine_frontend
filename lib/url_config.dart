@@ -1,8 +1,6 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 class Config {
-  // Base URL from the .env file or fallback to localhost
-  static String get baseUrl => dotenv.env['BASE_URL'] ?? 'http://localhost:8080';
+  // Base URL from the Environment class or fallback to localhost
+  static String baseUrl = Environment.baseUrl;
 
   // All API endpoints
   static const Map<String, String> endpoints = {
@@ -44,4 +42,9 @@ class Config {
 
     return baseUrl + endpoint;
   }
+}
+
+class Environment {
+  // Retrieve the BASE_URL from --dart-define, or use a default
+  static String get baseUrl => const String.fromEnvironment('BASE_URL', defaultValue: 'http://localhost:8080');
 }

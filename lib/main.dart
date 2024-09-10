@@ -1,7 +1,6 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rosedine/auth.dart';
@@ -10,23 +9,8 @@ import 'onboarding_screen.dart';
 
 final container = ProviderContainer();
 
-Future<void> main() async {
+  void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Conditionally load the .env file if running locally (both for mobile and web)
-  if (kIsWeb) {
-    // Try loading the .env file for local development on web
-    try {
-      await dotenv.load(fileName: "assets/.env");
-      print('Loaded .env file for local web development');
-    } catch (e) {
-      // In production on Netlify, the .env file won't exist, and variables will be injected
-      print('Failed to load .env file, relying on platform-injected environment variables');
-    }
-  } else {
-    // When running on mobile, load .env file from assets
-    await dotenv.load(fileName: "assets/.env");
-  }
 
   if (!kIsWeb) {
     print('Requesting SCHEDULE_EXACT_ALARM permission...');
