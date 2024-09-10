@@ -75,7 +75,7 @@ flutter:
     - assets/RoseDine.jpg
     - assets/RoseDine_2.jpg
     - assets/RoseDine3.png
-    - assets/.env
+  #  - assets/.env commented out for production builds.
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
