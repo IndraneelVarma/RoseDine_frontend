@@ -32,7 +32,9 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}  # Use secret to pass environment variable
+        run: flutter build apk --release --dart-define=BASE_URL=$BASE_URL
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
